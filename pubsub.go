@@ -193,7 +193,7 @@ func (obj *PubSubInMemory) Ack(subscriptionId, messageId string) {
 	ackObj := *NewAckResponse(subscriptionId, messageId)
 	ch := obj.ackResponseChannelMap[ackObj]
 	if ch != nil {
-		wg.Done()
+		wg.Done()  // this should be moved to triggerMessagePropagation but I was facing some wierd deadlock issue which I couldn't debug successfully because of time constraint
 		ch <- true
 		delete(obj.ackResponseChannelMap, ackObj)
 	}
